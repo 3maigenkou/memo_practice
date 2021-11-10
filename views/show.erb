@@ -1,4 +1,9 @@
-<p>メモ<br>
-<p>内容<br>
-<input type="button" onclick="location.href='/edit'" value="変更">
-<input type="button" onclick="location.href='/'" value="削除">
+<h2><%= h(@title) %></h2>
+<p><%= h(@content) %></p>
+
+<form method="post" action="<%= @id %>">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="button" onclick="location.href='/'" value="削除">
+  <a href="/memos/<%= @id %>/edit" class="edit_button">編集</a>
+  <input type="button" onclick="location.href='/<%= @id %>/edit'" value="変更">
+</form>

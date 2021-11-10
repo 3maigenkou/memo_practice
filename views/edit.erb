@@ -1,7 +1,8 @@
-<form action="#" method="post">
+<form action="/<%= @id %>/edit" method="post">
 <p>タイトル<br>
-<input type="text" name="name"></p>
+<input type="text" name="title" value="<%= h(@title) %>"></p>
 <p>内容<br>
-<textarea name="comment" cols="30" rows="10"></textarea></p>
+<textarea name="comment" cols="30" rows="10"><%= h(@content) %></textarea></p>
 </form>
+<input type="hidden" name="_method" value="PATCH">
 <input type="button" onclick="location.href='/'" value="変更">

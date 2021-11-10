@@ -8,14 +8,12 @@ get '/' do
   erb :index
 end
 
+post '/' do
+  memo = { 'id' => SecureRandom.uuid, 'title' => params[:title], 'comment' => params[:comment] }
+  File.open("data/memos_#{memo['id']}.json", 'w') { |file| JSON.dump(memo, file) }
+  redirect to("/")
+end
+
 get '/new' do
   erb :new
-end
-
-get '/show' do
-  erb :show
-end
-
-get '/edit' do
-  erb :edit
 end
