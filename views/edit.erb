@@ -1,8 +1,6 @@
-<form action="/<%= @id %>/edit" method="post">
-<p>タイトル<br>
-<input type="text" name="title" value="<%= h(@title) %>"></p>
-<p>内容<br>
-<textarea name="comment" cols="30" rows="10"><%= h(@content) %></textarea></p>
+<form action="/edit/<%= @id %>" method="post">
+	<p><input type="text" name="title" value="<%= h @title %>"></p>
+	<p><textarea name="comment"><%= h @comment %></textarea></p>
+  <input type="hidden" name="_method" value="PATCH">
+	<input type="submit" value="変更">
 </form>
-<input type="hidden" name="_method" value="PATCH">
-<input type="button" onclick="location.href='/'" value="変更">
