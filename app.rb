@@ -70,3 +70,7 @@ delete '/edit/:id' do |id|
   File.delete("data/#{id}.json")
   redirect to("/")
 end
+
+not_found do
+  erb :not_found
+end
