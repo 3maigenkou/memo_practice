@@ -12,7 +12,7 @@ end
 
 get '/' do
   sort_files = Dir.glob('data/*.json').sort_by { |file| File.birthtime(file) }
-  @load_files = sort_files.map do |file|
+  @memo_contents = sort_files.map do |file|
     json_file = File.open(file, 'r')
     JSON.load(json_file)
   end
@@ -35,39 +35,31 @@ get '/new' do
 end
 
 get '/memo/:id' do |id|
-  memo = File.open("data/#{id}.json", 'r') do |file|
+  @memo = File.open("data/#{id}.json", 'r') do |file|
     JSON.load(file)
   end
-  @id = memo['id']
-  @title = memo['title']
-  @comment = memo['comment']
   erb :show
 end
 
 get '/edit/:id' do |id|
-  memo = File.open("data/#{id}.json", 'r') do |file|
+  @memo = File.open("data/#{id}.json", 'r') do |file|
     JSON.load(file)
   end
-  @id = memo['id']
-  @title = memo['title']
-  @comment = memo['comment']
   erb :edit
 end
 
 patch '/edit/:id' do |id|
-  id = params[:id]
   title = params[:title]
   comment = params[:comment]
-  File.open("data/#{id}.json", 'w') do |file|
+  File.open("data/#{params[:id]}.json", 'w') do |file|
     json = { id: id.to_s, title: title.to_s, comment: comment.to_s }
     JSON.dump(json, file)
   end
   redirect to("/memo/#{id}")
 end
 
-delete '/edit/:id' do |id|
-  id = params[:id]
-  File.delete("data/#{id}.json")
+delete '/edit/:id' do
+  File.delete("data/#{params[:id]}.json")
   redirect to('/')
 end
 

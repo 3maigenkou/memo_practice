@@ -1,6 +1,6 @@
 <input type="button" onclick="location.href='new'" value="追加">
 <ul>
-  <% @load_files.each do|file| %>
+  <% @memo_contents.each do|file| %>
     <li><a href="/memo/<%= file['id'] %>">
       <%= h file['title'] %>
     </a></li>
