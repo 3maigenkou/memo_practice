@@ -10,9 +10,8 @@ sinatraを使って作成したシンプルなメモアプリです。
 ```
 % bundle install
 ```
-### 3.bundleのインストール、アプリの実行
+### 3.アプリの実行
 ```
-% bundle install
 % bundle exec ruby app.rb
 ```
 ### 4.ブラウザでアクセス
