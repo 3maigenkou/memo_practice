@@ -1,0 +1,7 @@
+<p><%= h @memo['title'] %></p>
+<p><%= h @memo['comment'] %></p>
+<input type="button" onclick="location.href='/edit/<%= @memo['id'] %>'" value="変更">
+<form action="/edit/<%= @memo['id'] %>" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+	<input type="submit" value="削除">
+</form>
