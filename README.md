@@ -26,5 +26,5 @@ sinatraを使って作成したシンプルなメモアプリです。
 ```
 % bundle exec ruby app.rb
 ```
-### 4.ブラウザでアクセス
+### 5.ブラウザでアクセス
 [http://localhost:4567](http://localhost:4567)
