@@ -15,7 +15,7 @@ sinatraを使って作成したシンプルなメモアプリです。
 % psql -U postgres
 # CREATE DATABASE memotest;
 # \c memotest
-# CREATE TABLE t_memos
+# CREATE TABLE memo
   (id  SERIAL,
   title TEXT NOT NULL,
   comment TEXT,
