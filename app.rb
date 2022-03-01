@@ -15,7 +15,7 @@ end
 
 get '/' do
   connection
-  @memo_contents = @conn.exec('SELECT * FROM memo')
+  @memo_contents = @conn.exec('SELECT * FROM memo ORDER BY id')
   erb :index
 end
 
