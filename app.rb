@@ -9,21 +9,44 @@ helpers do
   alias_method :h, :escape_html
 end
 
-def connection
-  @conn = PG.connect(dbname: 'memotest')
+
+class Memo
+  def initialize
+    @conn = PG.connect(dbname: 'memotest')
+  end
+
+  def get_all_memo
+    @conn.exec('SELECT * FROM memo ORDER BY id')
+  end
+
+  def create_new_memo(title,comment)
+    @conn.exec("INSERT INTO memo (title, comment) VALUES ('#{title}', '#{comment}') RETURNING id").first
+  end
+
+  def get_memo_detail(id)
+    @conn.exec("SELECT * FROM memo WHERE id = '#{id}'").first
+  end
+
+  def update_memo(title,comment,id)
+    @conn.exec("UPDATE memo SET title = '#{title}', comment = '#{comment}' WHERE id ='#{id}'")
+  end
+
+  def delete_memo(id)
+    @conn.exec("DELETE FROM memo WHERE id ='#{id}'")
+  end
 end
 
+memo = Memo.new
+
 get '/' do
-  connection
-  @memo_contents = @conn.exec('SELECT * FROM memo ORDER BY id')
+  @memo_contents = memo.get_all_memo
   erb :index
 end
 
 post '/' do
-  connection
   title = params[:title]
   comment = params[:comment]
-  new_memo = @conn.exec("INSERT INTO memo (title, comment) VALUES ('#{title}', '#{comment}') RETURNING id").first
+  new_memo = memo.create_new_memo(title,comment)
   id = new_memo['id']
   redirect to("/memo/#{id}")
 end
@@ -33,29 +56,25 @@ get '/new' do
 end
 
 get '/memo/:id' do |id|
-  connection
-  @memo = @conn.exec("SELECT * FROM memo WHERE id = '#{id}'").first
+  @memo = memo.get_memo_detail(id)
   erb :show
 end
 
 get '/edit/:id' do |id|
-  connection
-  @memo = @conn.exec("SELECT * FROM memo WHERE id = '#{id}'").first
+  @memo = memo.get_memo_detail(id)
   erb :edit
 end
 
 patch '/edit/:id' do |id|
   title = params[:title]
   comment = params[:comment]
-  connection
-  @conn.exec("UPDATE memo SET title = '#{title}', comment = '#{comment}' WHERE id ='#{id}'")
+  memo.update_memo(title,comment,id)
   redirect to("/memo/#{id}")
 end
 
 delete '/edit/:id' do
   id = params[:id]
-  connection
-  @conn.exec("DELETE FROM memo WHERE id ='#{id}'")
+  memo.delete_memo(id)
   redirect to('/')
 end
 
