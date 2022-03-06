@@ -13,11 +13,15 @@ end
 memo = Memo.new
 
 get '/' do
+  redirect to("/memo")
+end
+
+get '/memo' do
   @memo_contents = memo.all_memo
   erb :index
 end
 
-post '/' do
+post '/memo' do
   title = params[:title]
   comment = params[:comment]
   new_memo = memo.create_new_memo(title, comment)
@@ -25,7 +29,7 @@ post '/' do
   redirect to("/memo/#{id}")
 end
 
-get '/new' do
+get '/memo/new' do
   erb :new
 end
 
@@ -34,19 +38,19 @@ get '/memo/:id' do |id|
   erb :show
 end
 
-get '/edit/:id' do |id|
+get '/memo/edit/:id' do |id|
   @memo = memo.get_memo_detail(id)
   erb :edit
 end
 
-patch '/edit/:id' do |id|
+patch '/memo/edit/:id' do |id|
   title = params[:title]
   comment = params[:comment]
   memo.update_memo(title, comment, id)
   redirect to("/memo/#{id}")
 end
 
-delete '/edit/:id' do
+delete '/memo/:id' do
   id = params[:id]
   memo.delete_memo(id)
   redirect to('/')
