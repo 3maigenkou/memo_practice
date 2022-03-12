@@ -38,12 +38,12 @@ get '/memo/:id' do |id|
   erb :show
 end
 
-get '/memo/edit/:id' do |id|
+get '/memo/:id/edit' do |id|
   @memo = memo.get_memo_detail(id)
   erb :edit
 end
 
-patch '/memo/edit/:id' do |id|
+patch '/memo/:id' do |id|
   title = params[:title]
   comment = params[:comment]
   memo.update_memo(title, comment, id)
