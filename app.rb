@@ -13,7 +13,7 @@ end
 memo = Memo.new
 
 get '/' do
-  redirect to("/memo")
+  redirect to('/memo')
 end
 
 get '/memo' do
