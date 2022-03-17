@@ -2,64 +2,57 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'securerandom'
-require 'json'
+require 'pg'
+require './memo'
 
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
 end
 
+memo = Memo.new
+
 get '/' do
-  sort_files = Dir.glob('data/*.json').sort_by { |file| File.birthtime(file) }
-  @memo_contents = sort_files.map do |file|
-    json_file = File.open(file, 'r')
-    JSON.load(json_file)
-  end
+  redirect to('/memo')
+end
+
+get '/memo' do
+  @memo_contents = memo.all_memo
   erb :index
 end
 
-post '/' do
-  id = SecureRandom.alphanumeric(10)
+post '/memo' do
   title = params[:title]
   comment = params[:comment]
-  File.open("data/#{id}.json", 'w') do |file|
-    json = { id: id.to_s, title: title.to_s, comment: comment.to_s }
-    JSON.dump(json, file)
-  end
+  new_memo = memo.create_new_memo(title, comment)
+  id = new_memo['id']
   redirect to("/memo/#{id}")
 end
 
-get '/new' do
+get '/memo/new' do
   erb :new
 end
 
 get '/memo/:id' do |id|
-  @memo = File.open("data/#{id}.json", 'r') do |file|
-    JSON.load(file)
-  end
+  @memo = memo.get_memo_detail(id)
   erb :show
 end
 
-get '/edit/:id' do |id|
-  @memo = File.open("data/#{id}.json", 'r') do |file|
-    JSON.load(file)
-  end
+get '/memo/:id/edit' do |id|
+  @memo = memo.get_memo_detail(id)
   erb :edit
 end
 
-patch '/edit/:id' do |id|
+patch '/memo/:id' do |id|
   title = params[:title]
   comment = params[:comment]
-  File.open("data/#{params[:id]}.json", 'w') do |file|
-    json = { id: id.to_s, title: title.to_s, comment: comment.to_s }
-    JSON.dump(json, file)
-  end
+  memo.update_memo(title, comment, id)
   redirect to("/memo/#{id}")
 end
 
-delete '/edit/:id' do
-  File.delete("data/#{params[:id]}.json")
+delete '/memo/:id' do
+  id = params[:id]
+  memo.delete_memo(id)
   redirect to('/')
 end
 

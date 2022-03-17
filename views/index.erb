@@ -1,4 +1,4 @@
-<input type="button" onclick="location.href='new'" value="追加">
+<input type="button" onclick="location.href='/memo/new'" value="追加">
 <ul>
   <% @memo_contents.each do|file| %>
     <li><a href="/memo/<%= file['id'] %>">

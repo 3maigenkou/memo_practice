@@ -10,9 +10,21 @@ sinatraを使って作成したシンプルなメモアプリです。
 ```
 % bundle install
 ```
-### 3.アプリの実行
+### 3.PostgreSQLでデータベースの作成
+```
+% psql -U postgres
+# CREATE DATABASE memotest;
+# \c memotest
+# CREATE TABLE memo
+  (id  SERIAL,
+  title TEXT NOT NULL,
+  comment TEXT,
+  PRIMARY KEY (id));
+# \q
+```
+### 4.アプリの起動
 ```
 % bundle exec ruby app.rb
 ```
-### 4.ブラウザでアクセス
+### 5.ブラウザでアクセス
 [http://localhost:4567](http://localhost:4567)
